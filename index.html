@@ -1,1 +1,1087 @@
+<!DOCTYPE html>
+<!-- Enhanced with smooth scrolling and animations -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SMHI Energy Solutions - Innovative energy solutions for a sustainable future">
+    <title>SMHI Energy Solutions</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- External JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    
+    <!-- Main JavaScript -->
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+    <!-- Rest of the HTML content remains the same -->
+    
+    <!-- Preloader -->
+    <div class="preloader"></div>
+    
+    <!-- Header -->
+    <header id="header">
+        <!-- Header content remains the same -->
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- Hero section content remains the same -->
+    </section>
+    
+    <!-- Rest of the HTML content remains the same -->
+    
+    <script>
+        // Initialize GSAP with ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate elements on scroll
+        gsap.utils.toArray('.service-card, .feature-card, .testimonial-card').forEach((el, i) => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        });
+        
+        // Animate numbers
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start) + (obj.getAttribute('data-suffix') || '');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        // Animate stats when in view
+        const stats = document.querySelectorAll('.stat-number');
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const count = target.getAttribute('data-count');
+                    const suffix = target.getAttribute('data-suffix') || '';
+                    animateValue(target, 0, count, 2000);
+                    statObserver.unobserve(target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        stats.forEach(stat => statObserver.observe(stat));
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Back to top button
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+    </script>
+    <title>SMHI Construction & Energy Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Modern Header Styles */
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+        
+        .navbar {
+            padding: 0;
+        }
+        
+        .navbar-brand {
+            padding: 0;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--dark) !important;
+            font-weight: 500;
+            padding: 10px 15px !important;
+            position: relative;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 15px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: calc(100% - 30px);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            padding: 180px 0 120px;
+            color: white;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-section h2 {
+            font-weight: 300;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            border: none;
+            color: var(--dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-outline-light {
+            border: 2px solid white;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-light:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Scroll Down Animation */
+        .scroll-down {
+            position: absolute;
+            left: 50%;
+            bottom: 40px;
+            transform: translateX(-50%);
+            color: white;
+            text-decoration: none;
+            z-index: 1;
+        }
+        
+        .mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 15px;
+            position: relative;
+            margin: 0 auto 10px;
+        }
+        
+        .mouse span {
+            display: block;
+            width: 6px;
+            height: 10px;
+            background: white;
+            border-radius: 3px;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 2s infinite;
+        }
+        
+        .arrow span {
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+            margin: -6px auto 0;
+            animation: arrow 2s infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translate(-50%, 0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(-50%, 20px); opacity: 0; }
+        }
+        
+        @keyframes arrow {
+            0% { opacity: 0; transform: rotate(45deg) translate(-5px, -5px); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: rotate(45deg) translate(5px, 5px); }
+        }
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        :root {
+            --primary: #0056b3;
+            --secondary: #00a86b;
+            --dark: #1a2b3c;
+            --light: #f8f9fa;
+            --accent: #ffc107;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: #444;
+            background-color: #f9fbfd;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--dark);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            padding: 5px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 168, 107, 0.9)), 
+                        url('images%20logos/images%20for%20SMHI/IMG_5132.png') center/cover no-repeat;
+            color: white;
+            padding: 180px 0 120px;
+            text-align: center;
+            margin-top: 0;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.5s;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--dark);
+        }
+        
+        /* Services Section */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--dark);
+            position: relative;
+            font-size: 2rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 15px auto 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+            position: relative;
+            transform: translateY(0);
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            background: rgba(0, 86, 179, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .service-card:hover .service-icon {
+            background: var(--gradient);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .service-content {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .service-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .benefits-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .benefits-list li:before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            transition: var(--transition);
+        }
+        
+        .service-card:hover .benefits-list li:before {
+            color: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* Incentive Program */
+        .incentive {
+            position: relative;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9)), 
+                        url('images%20logos/images%20for%20SMHI/IMG_5133.jpeg') center/cover no-repeat fixed;
+            text-align: center;
+            padding: 100px 0;
+            overflow: hidden;
+        }
+        
+        .incentive-badge {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .incentive-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.5s;
+            z-index: -1;
+        }
+        
+        .incentive-badge:hover::after {
+            width: 100%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .next-steps {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .chart-placeholder {
+            background: #ddd;
+            height: 200px;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 200px;
+            color: #555;
+            margin: 1rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        table, th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 0.5rem;
+        }
+        /* Animation for stats */
+        @keyframes countUp {
+            from { width: 0; }
+        }
+        
+        .stat-bar {
+            height: 8px;
+            background: #e0e6ed;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .stat-progress {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            animation: countUp 1.5s ease-out forwards;
+        }
+        
+        /* Hover effects for cards */
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-card:hover::before {
+            height: 100%;
+            opacity: 0.1;
+        }
+        
+        /* Testimonial cards */
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .testimonial-card::before {
+            content: '"\201C"';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 80px;
+            color: rgba(0, 86, 179, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 12px 30px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Contact Button -->
+    <div class="floating-contact">
+        <a href="#contact" class="contact-button">
+            <i class="fas fa-comment-alt"></i>
+            <span>Get a Quote</span>
+        </a>
+    </div>
+    
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 
+<header id="header" class="fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">
+                <img src="images%20logos/images%20for%20SMHI/IMG_5122.png" alt="SMHI Logo" class="logo" style="max-height: 50px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#savings">Savings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a href="#contact" class="btn btn-primary">Get Free Assessment</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<section class="hero-section" id="home" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images%20logos/images%20for%20SMHI/IMG_5133.jpeg') center/cover no-repeat fixed;">
+    <div class="container">
+        <div class="row min-vh-100 align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-3 fw-bold text-white mb-4">Nationwide Energy Solutions</h1>
+                <h2 class="h3 text-light mb-5">Cutting Utility Costs by <span class="text-warning">30–50%</span> for Businesses Nationwide</h2>
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                    <a href="#contact" class="btn btn-primary btn-lg px-5 py-3">Get Your Free Savings Assessment</a>
+                    <a href="#services" class="btn btn-outline-light btn-lg px-5 py-3">Our Services</a>
+                </div>
+                
+                <div class="mt-5 pt-4">
+                    <div class="d-flex flex-wrap justify-content-center gap-4">
+                        <div class="d-flex align-items-center text-white">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <span>75% Rebates Available</span>
+                        </div>
+                        <div class="d-flex align-items-center text-white">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <span>No Upfront Costs</span>
+                        </div>
+                        <div class="d-flex align-items-center text-white">
+                            <i class="fas fa-check-circle text-warning me-2"></i>
+                            <span>Quick ROI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <a href="#services" class="scroll-down">
+        <div class="mouse">
+            <span></span>
+        </div>
+        <div class="arrow">
+            <span></span>
+        </div>
+    </a>
+</section>
+
+<section>
+  <h2>Energy Efficiency Experts</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. SMHI has delivered turnkey solutions across healthcare, manufacturing, and commercial sectors. We simplify complex rebate programs and deliver high-efficiency upgrades fast.</p>
+  <ul>
+    <li>Lighting Retrofits</li>
+    <li>VFDs</li>
+    <li>Power Factor Correction</li>
+    <li>EMS/ADR</li>
+    <li>Surge Protection</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Energy Incentive Program</h2>
+  <p><strong>75% Cost Coverage | Fast ROI | We Handle Paperwork</strong></p>
+  <h3>Do You Qualify?</h3>
+  <ul class="checklist">
+    <li>Do you operate 50+ HP motors?</li>
+    <li>Have older lighting or HVAC systems?</li>
+    <li>Want to lower demand charges?</li>
+    <li>Spend over $2,500/month in utilities?</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Proven Energy Technologies</h2>
+
+  <div class="tech-section">
+    <img src="led-icon.png" alt="LED Icon" />
+    <div>
+      <h3>LED Lighting: 70% Savings + 100,000-Hour Lifespan</h3>
+      <ul>
+        <li>Drastically reduces lighting energy use</li>
+        <li>Low-maintenance & long-lasting</li>
+        <li>Qualifies for maximum utility rebates</li>
+        <li>Typical Payback: 1.5 Years</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <img src="vfd-icon.png" alt="VFD Icon" />
+    <div>
+      <h3>VFDs: Cut Motor Costs by 20–60%</h3>
+      <ul>
+        <li>Control motor speeds for HVAC, pumps, fans</li>
+        <li>Reduces wear and tear</li>
+        <li>Ideal for variable-load systems</li>
+        <li>Typical Payback: 2 Years</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <img src="pfc-icon.png" alt="PFC Icon" />
+    <div>
+      <h3>Power Factor Correction: Lower Demand Charges</h3>
+      <ul>
+        <li>Improve electrical efficiency</li>
+        <li>Reduce utility penalties</li>
+        <li>Boost overall system stability</li>
+        <li>Typical Payback: 1.8 Years</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <img src="ems-icon.png" alt="EMS Icon" />
+    <div>
+      <h3>EMS & ADR: Automated Energy Optimization</h3>
+      <ul>
+        <li>Real-time monitoring + demand response</li>
+        <li>Peak load management</li>
+        <li>Maximize rebate capture</li>
+        <li>Typical Payback: 2–3 Years</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <img src="surge-icon.png" alt="Surge Protection Icon" />
+    <div>
+      <h3>Surge Protection: Equipment Life Extension</h3>
+      <ul>
+        <li>Protects critical systems from power spikes</li>
+        <li>Reduces downtime and replacement costs</li>
+        <li>Easy integration with existing panels</li>
+        <li>Typical Payback: 1 Year</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Stacked Savings: Up to 50% Utility Reduction</h2>
+  <div class="chart-placeholder">[Savings Chart Placeholder]</div>
+  <table>
+    <tr>
+      <th>Technology</th>
+      <th>Typical Savings</th>
+    </tr>
+    <tr>
+      <td>Lighting</td>
+      <td>45–70%</td>
+    </tr>
+    <tr>
+      <td>VFDs</td>
+      <td>20–60%</td>
+    </tr>
+    <tr>
+      <td>Power Factor</td>
+      <td>10–25%</td>
+    </tr>
+    <tr>
+      <td>EMS</td>
+      <td>15–30%</td>
+    </tr>
+    <tr>
+      <td>Surge Protection</td>
+      <td>System Reliability ↑</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>Why SMHI?</h2>
+  <p><em>“SMHI helped us save thousands monthly and handled all rebate paperwork. Highly recommended!”</em></p>
+  <div class="three-cols">
+    <div>
+      <h4>Turnkey Process</h4>
+      <p>From energy audit to installation—we handle it all.</p>
+    </div>
+    <div>
+      <h4>Industry Expertise</h4>
+      <p>Serving Healthcare, Industrial, Schools, Commercial & More</p>
+    </div>
+    <div>
+      <h4>Rebate Maximization</h4>
+      <p>We work with Duke Energy and other providers to secure top rebates.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Next Steps</h2>
+  <p class="next-steps">
+    1. Walkthrough →<br>
+    2. Load Study →<br>
+    3. Install & Save
+  </p>
+  <p><strong>Schedule Your Assessment Today –</strong><br>
+  📞 (XXX) XXX-XXXX  | ✉️ info@smhi-energy.com</p>
+</section>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+    
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Hide preloader when page loads
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
