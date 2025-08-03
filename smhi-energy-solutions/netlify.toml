@@ -1,0 +1,120 @@
+[build]
+  publish = "."  # Publish from the root directory
+  command = ""   # No build command needed for static site
+
+# Enable client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Set build environment
+[build.environment]
+  NODE_VERSION = "16"  # Use a stable LTS version
+  NPM_VERSION = "8"
+
+# Settings for production
+[context.production.environment]
+  NODE_ENV = "production"
+
+# Settings for deploy previews
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+
+# Settings for branch deploys
+[context.branch-deploy.environment]
+  NODE_ENV = "development"
+  publish = "pages"
+
+# Clean URLs (no .html in links)
+[[redirects]]
+  from = "/*"
+  to = "/:splat"
+  status = 200
+  force = false
+  
+# Force HTTPS
+[[redirects]]
+  from = "http://*"
+  to = "https://smhienergy.com/:splat"
+  status = 301
+  force = true
+
+# Redirect www to non-www (or vice versa if preferred)
+[[redirects]]
+  from = "https://www.smhienergy.com/*"
+  to = "https://smhienergy.com/:splat"
+  status = 301
+  force = true
+
+# Thank You page redirect after form submission
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you.html"
+  status = 200
+
+# Form submission handling
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; img-src 'self' data: https:; font-src 'self' data:;"
+    
+# Cache control for static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache control for HTML files
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+  status = 200
+
+# Handle 404s by redirecting to index.html for SPA-like routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache control for static assets
+[[headers.snippets]]
+  syntax = "toml"
+  [headers.snippets.values]
+    Cache-Control = "public, max-age=31536000"
+  [headers.snippets.conditions]
+    path = "/css/*"
+
+[[headers.snippets]]
+  syntax = "toml"
+  [headers.snippets.values]
+    Cache-Control = "public, max-age=31536000"
+  [headers.snippets.conditions]
+    path = "/js/*"
+
+[[headers.snippets]]
+  syntax = "toml"
+  [headers.snippets.values]
+    Cache-Control = "public, max-age=31536000"
+  [headers.snippets.conditions]
+    path = "/images/*"

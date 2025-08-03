@@ -1,0 +1,14 @@
+# Allow all search engines to crawl the entire site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.smhienergy.com/sitemap.xml
+
+# Disallow crawling of admin or sensitive areas
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /assets/css/
+Disallow: /assets/js/
+
+# Crawl-delay: 10  # Uncomment and adjust if needed to limit crawl rate
